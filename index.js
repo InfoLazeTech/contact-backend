@@ -3,19 +3,18 @@ dotenv.config();
 import express from "express";
 import mongoose from "mongoose";
 import cors from "cors";
-
-import contactRoutes from "./routes/ConatctUs.Route.js";
-import BiogenixcontactRoutes from "./routes/BiogenixContact.Route.js";
+import routes from "./routes/index.js";
 
 const app = express();
 app.use(express.json());
 app.use(cors());
 
+// all routes under /api
+app.use("/api", routes);
+
 app.get("/", (req, res) => {
   res.send("Hello Backend");
 });
-app.use("/api", contactRoutes);
-app.use("/api", BiogenixcontactRoutes);
 
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
@@ -23,12 +22,6 @@ app.listen(PORT, () => {
 });
 
 mongoose
-  .connect(process.env.MONGODB_URI,{serverSelectionTimeoutMS: 30000,})
-  .then(() => {
-    console.log("MongoDB Connected....");
-  })
-  .catch((err) => {
-    console.log("MongoDB Connenction Error: ", err);
-  });
-
-
+  .connect(process.env.MONGODB_URI, { serverSelectionTimeoutMS: 30000 })
+  .then(() => console.log("MongoDB Connected...."))
+  .catch((err) => console.log("MongoDB Connection Error: ", err));

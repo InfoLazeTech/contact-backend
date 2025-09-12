@@ -13,4 +13,4 @@ const BiogenixContactSchema = new mongoose.Schema(
   { timestamps: true }
 ); // optional: adds createdAt and updatedAt fields
 
-export const BiogenixContactModel = mongoose.model("Contact", BiogenixContactSchema);
+export const BiogenixContactModel = mongoose.model("BiogenixContact", BiogenixContactSchema);

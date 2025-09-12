@@ -13,7 +13,7 @@ export const createBiogenixContact = async (req, res) => {
 
     // Setup transporter
     const transporter = nodemailer.createTransport({
-      host: "smtp.gmail.com",
+      host: "smtp.hostinger.com",
       port: 465,
       secure: true,
       auth: {
@@ -22,70 +22,87 @@ export const createBiogenixContact = async (req, res) => {
       },
     });
 
-    console.log("BIOGENIX_EMAIL_USER",process.env.BIOGENIX_EMAIL_USER);
-    console.log("BIOGENIX_EMAIL_PASS",process.env.BIOGENIX_EMAIL_PASS);
-    
+    // Shared colors for consistency
+    const colors = {
+      green: "#86b85e",
+      greenHover: "#caefac",
+      darkGreen: "#43a047",
+      darkGreenText: "#064212",
+      background: "#f8f8f8",
+      blue: "#002e5b",
+    };
+
     // -------------------------
-    // 1) Send to ADMIN (HTML)
+    // Common HTML Template (function)
+    // -------------------------
+    const emailTemplate = (title, content, footerNote) => `
+      <div style="font-family: Arial, sans-serif; max-width: 600px; margin: auto;
+                  border: 1px solid #e0e0e0; border-radius: 8px; overflow: hidden;">
+        
+        <!-- Header -->
+        <div style="background: ${colors.green}; color: white; padding: 20px; text-align: center;">
+          <h2 style="margin:0;">${title}</h2>
+        </div>
+        
+        <!-- Body -->
+        <div style="padding: 20px; color: ${colors.darkGreenText}; background:${colors.background}">
+          ${content}
+          <p style="margin-top: 20px; font-size: 12px; color: #777;">
+            ${footerNote}
+          </p>
+        </div>
+        
+        <!-- Footer -->
+        <div style="background: ${colors.greenHover}; text-align: center; padding: 10px; 
+                    font-size: 12px; color: ${colors.darkGreenText};">
+          🌱 ${new Date().getFullYear()} Biogenix Compostable Granules. All rights reserved.
+        </div>
+      </div>
+    `;
+
+    // -------------------------
+    // 1) Admin Mail
     // -------------------------
     const adminMail = {
-      from: `"Admin" <${process.env.BIOGENIX_EMAIL_USER}>`,
+      from: `"Biogenix Admin" <${process.env.BIOGENIX_EMAIL_USER}>`,
       to: process.env.BIOGENIX_ADMIN_EMAIL,
-      subject: `📩 New Contact Request: ${subject}`,
-      html: `
-    <div style="font-family: Arial, sans-serif; max-width: 600px; margin: auto; border: 1px solid #e0e0e0; border-radius: 8px; overflow: hidden;">
-      <div style="background: #333; color: white; padding: 20px; text-align: center;">
-        <h2>📩 New Contact Request</h2>
-      </div>
-      <div style="padding: 20px; color: #333;">
+      subject: `📩 New Contact Request from ${name}`,
+      html: emailTemplate(
+        "📩 New Contact Request - Biogenix",
+        `
         <p><strong>Name:</strong> ${name}</p>
         <p><strong>Email:</strong> ${email}</p>
-        <p><strong>Phone:</strong> ${phone}</p>
-        <p><strong>Subject:</strong> ${subject}</p>
         <p><strong>Message:</strong></p>
-        <p style="background: #f9f9f9; padding: 10px; border-left: 4px solid #4a90e2;">
+        <p style="background: #fff; padding: 10px; border-left: 4px solid ${colors.darkGreen};">
           ${description}
         </p>
-        <p style="margin-top: 20px; font-size: 12px; color: #777;">
-          Received at: ${new Date().toLocaleString()}
-        </p>
-      </div>
-      <div style="background: #f5f5f5; text-align: center; padding: 10px; font-size: 12px; color: #777;">
-        📌 This is an automated message from your website contact form.
-      </div>
-    </div>
-  `,
+        `,
+        `Received at: ${new Date().toLocaleString()}`
+      ),
     };
 
     await transporter.sendMail(adminMail);
 
     // -------------------------
-    // 2) Send THANK YOU to CUSTOMER (HTML template)
+    // 2) Customer Mail
     // -------------------------
     const customerMail = {
-      from: `"Infolanze Digital Marketing Team" <${process.env.BIOGENIX_EMAIL_USER}>`,
+      from: `"Biogenix Team" <${process.env.BIOGENIX_EMAIL_USER}>`,
       to: email,
-      subject: `✅ Thank you for contacting us`,
-      html: `
-      <div style="font-family: Arial, sans-serif; max-width: 600px; margin: auto; border: 1px solid #e0e0e0; border-radius: 8px; overflow: hidden;">
-        <div style="background: #4a90e2; color: white; padding: 20px; text-align: center;">
-          <h2>Thank You, ${name}!</h2>
-        </div>
-        <div style="padding: 20px; color: #333;">
-          <p>We have received your message and our team will get back to you soon.</p>
-          <p><strong>Here’s a copy of your submission:</strong></p>
-          <ul>
-            <li><strong>Subject:</strong> ${subject}</li>
-            <li><strong>Message:</strong> ${description}</li>
-          </ul>
-          <p style="margin-top: 20px;">Best regards,</p>
-          <p><strong>Infolanze Digital Marketing Team</strong></p>
-        </div>
-        <div style="background: #f5f5f5; text-align: center; padding: 10px; font-size: 12px; color: #777;">
-          © ${new Date().getFullYear()} Digital Marketing. All rights reserved.
-        </div>
-      </div>
-      `,
+      subject: "🌱 Thank You for Contacting Biogenix",
+      html: emailTemplate(
+        `Thank You, ${name}!`,
+        `
+        <p>We have received your message and our Biogenix team will get back to you soon.</p>
+        <p><strong>Here’s a copy of your submission:</strong></p>
+        <ul>
+          <li><strong>Your Message:</strong> ${description}</li>
+        </ul>
+        <p style="margin-top: 20px;">Best regards,</p>
+        <p><strong>Biogenix Compostable Granules Team</strong></p>
+        `,
+        "This is an automated confirmation from Biogenix."
+      ),
     };
 
     await transporter.sendMail(customerMail);

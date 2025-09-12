@@ -81,7 +81,7 @@ export const createContact = async (req, res) => {
             <li><strong>Message:</strong> ${description}</li>
           </ul>
           <p style="margin-top: 20px;">Best regards,</p>
-          <p><strong>Digital Marketing Team</strong></p>
+          <p><strong>Infolanze Digital Marketing Team</strong></p>
         </div>
         <div style="background: #f5f5f5; text-align: center; padding: 10px; font-size: 12px; color: #777;">
           © ${new Date().getFullYear()} Digital Marketing. All rights reserved.

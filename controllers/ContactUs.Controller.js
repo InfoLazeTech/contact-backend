@@ -66,7 +66,7 @@ export const createContact = async (req, res) => {
     // 2) Send THANK YOU to CUSTOMER (HTML template)
     // -------------------------
     const customerMail = {
-      from: `"Digital Marketing Team" <${process.env.EMAIL_USER}>`,
+      from: `"Infolanze Digital Marketing Team" <${process.env.EMAIL_USER}>`,
       to: email,
       subject: `✅ Thank you for contacting us`,
       html: `

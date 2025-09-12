@@ -55,7 +55,7 @@ export const createBiogenixContact = async (req, res) => {
         <!-- Footer -->
         <div style="background: ${colors.greenHover}; text-align: center; padding: 10px; 
                     font-size: 12px; color: ${colors.darkGreenText};">
-          🌱 ${new Date().getFullYear()} Biogenix Compostable Granules. All rights reserved.
+          🌱 Copyright © ${new Date().getFullYear()} Biogenix Compostable Pvt. Ltd. All rights reserved.
         </div>
       </div>
     `;

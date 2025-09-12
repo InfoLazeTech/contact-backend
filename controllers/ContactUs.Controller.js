@@ -102,7 +102,7 @@ export const createContact = async (req, res) => {
       newContact,
     });
   } catch (error) {
-    console.error("Mail/controller error:", error);
+    console.log("Mail/controller error:", error);
     res.status(500).json({ success: false, message: "Server Error" });
   }
 };

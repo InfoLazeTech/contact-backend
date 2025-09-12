@@ -5,7 +5,6 @@ export const createContact = async (req, res) => {
   try {
     const { name, email, phone, subject, description } = req.body;
 
-    // Save contact to DB
     const newContact = await ContactModel.create({
       name,
       email,

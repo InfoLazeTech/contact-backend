@@ -5,6 +5,7 @@ import mongoose from "mongoose";
 import cors from "cors";
 
 import contactRoutes from "./routes/ConatctUs.Route.js";
+import BiogenixcontactRoutes from "./routes/BiogenixContact.Route.js";
 
 const app = express();
 app.use(express.json());
@@ -14,6 +15,7 @@ app.get("/", (req, res) => {
   res.send("Hello Backend");
 });
 app.use("/api", contactRoutes);
+app.use("/api", BiogenixcontactRoutes);
 
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {

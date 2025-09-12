@@ -21,7 +21,7 @@ app.listen(PORT, () => {
 });
 
 mongoose
-  .connect(process.env.MONGODB_URI)
+  .connect(process.env.MONGODB_URI,{serverSelectionTimeoutMS: 30000,})
   .then(() => {
     console.log("MongoDB Connected....");
   })
